@@ -1,0 +1,13 @@
+auto/*
+*.aux
+*.log
+*.out
+*.gz
+*.toc
+*.pdf
+*.ps
+*.blg
+*.lof
+*.bbl
+
+.DS_Store

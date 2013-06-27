@@ -1,0 +1,394 @@
+\ProvidesPackage{internship-report}[2013/02/03 1.0 VU Software Engineering]
+
+\def\@outputtitle{
+  \begin{center}
+    \null\vfil
+    \vskip 4cm
+    {
+      \large \textbf{\@title} \par
+    }
+    \vskip 3ex
+    {
+      \large \@englishtitle \par
+    }
+    \@ifundefined{@paper}{\vskip 3ex}{
+      \vskip 3ex
+      {
+        \@paper \par
+      }
+    }
+  \end{center}
+  \vskip 4cm
+  \begin{flushright}
+    {
+      \begin{tabular}[t]{l}
+        Atliko: \@author \hfill \@signatureplace \\
+        \\
+        Darbo vadovas: \\
+        \@supervisor \hfill \@signatureplace
+        \@ifundefined{@reviewer}{}{
+          \\ \\
+          Recenzentas: \\
+          \@reviewer \hfill \@signatureplace
+        }
+      \end{tabular} \par
+    }
+  \end{flushright}
+}
+
+% Name of the paper (e.g. "Bachelor thesis")
+\newcommand{\paper}[1]{\def\@paper{#1}}
+% Name of faculty department (e.g. "Department of Software Engineering")
+\newcommand{\department}[1]{\def\@department{#1}}
+% Name of your supervisor
+\newcommand{\supervisor}[1]{\def\@supervisor{#1}}
+% Name of reviewer
+\newcommand{\reviewer}[1]{\def\@reviewer{#1}}
+% Article title in english
+\newcommand{\englishtitle}[1]{\def\@englishtitle{#1}}
+
+% Section name without number in TOC
+\newcommand{\sectionnonum}[1]{
+  \section*{#1}
+  \addcontentsline{toc}{section}{#1}
+}
+
+\RequirePackage{vmargin}
+\setpapersize[portrait]{A4}
+\setmarginsrb{3cm}{2cm}{1cm}{2cm}{0cm}{0cm}{0cm}{0cm}
+
+\RequirePackage{setspace}
+
+\RequirePackage{fontspec}
+\setmainfont{Times New Roman}
+
+\RequirePackage[english, lithuanian]{babel}
+\selectlanguage{lithuanian}
+
+\RequirePackage{indentfirst}
+
+\RequirePackage{tabularx}
+
+% first paragraph sentence indentation: 1cm
+\setlength{\parindent}{1cm}
+
+\newcommand{\@signatureplace}{
+  \parbox[t]{4cm}{
+    \makebox[4cm]{\leaders\vrule height 0.5pt depth 0.0pt \hfill \null}  \\
+    \makebox[4cm]{\raisebox{1ex}{\scriptsize (parašas)}}
+  }
+}
+
+\newcommand{\@placeholder}[2][\leaders\vrule height 0.5pt depth 0.0pt \hfill \null]{
+  \parbox[t]{4cm}{
+    \makebox[4cm]{#1} \\
+    \makebox[4cm]{\raisebox{1ex}{\scriptsize #2}}
+  }
+}
+
+\newcommand{\checktitle}[2]{
+  \@ifundefined{#1}{\PackageError{softeng}{#2}{Add the missing command}}
+}
+
+% Redefine \maketitle
+\renewcommand\maketitle{
+  \begin{titlepage}
+    \checktitle{@department}{
+      Title page has no department set (use command \protect\department)
+    }
+    \checktitle{@supervisor}{
+      Title page has no supervisor set (use command \protect\supervisor)
+    }
+    \checktitle{@englishtitle}{
+      English title must be provided (use command \protect\englishtitle)
+    }
+    \begin{center}
+      {
+        VILNIAUS UNIVERSITETAS \\
+        \vspace{1cm}
+        MATEMATIKOS IR INFORMATIKOS FAKULTETAS \\
+        \MakeUppercase{\@department}\par
+      }
+    \end{center}
+    \begin{center}
+      \vskip 2cm
+      {
+        \MakeUppercase{\@paper} \par
+      }
+      \vskip 2cm
+    \end{center}
+    \begin{center}
+      {
+        \begingroup
+        \fontsize{12pt}{14pt}\selectfont
+        \begin{tabularx}{\textwidth}{ X X X }
+          Praktiką atliko: \hfill & \@placeholder[\null]{(studento
+            vardas, pavardė)} & \@placeholder[\null]{(parašas)} \\
+          \\
+          \null & \@placeholder[\null]{(studijų programa, pakopa, kursas)} & \null \\
+        \end{tabularx}
+        \vskip 2cm
+        \begin{tabularx}{\textwidth}{ Xl X }
+          Praktikos institucija: & \@placeholder[\null]{(organizacijos pavadinimas)} \\
+          \hfill \\
+          Organizacijos praktikos vadovas: & \@placeholder[\null]{(pareigos,
+            vardas, pavardė)} \\
+          \hfill \\
+          Organizacijos praktikos vadovo įvertinimas: &
+          \@placeholder[\null]{(įvertinimas, parašas)} \\
+          \hfill \\
+          Universiteto praktikos vadovas: & \@placeholder[\null]{(mokslo
+            laipsnis, vardas, pavardė)} \\
+          \hfill \\
+          \null & \@placeholder[\null]{(parašas)}
+        \end{tabularx} \par
+        \vskip 2cm
+        \begingroup
+        \fontsize{10pt}{10pt}\selectfont
+        \begin{tabularx}{0.75\textwidth}{ X l }
+          \null & Ataskaitos įteikimo data \hfill \\
+          \null & Registracijos Nr. \@placeholder{ } \\
+          \null & Įvertinimas \hfill \@placeholder{(data, įvertinimas, parašas)}
+        \end{tabularx}
+        \endgroup
+        \endgroup
+      }
+    \end{center}
+    \begin{center}
+      \vskip 1.5cm
+      {
+        \begingroup
+        \fontsize{12pt}{14pt}\selectfont
+        \@date
+        \endgroup
+      }
+    \end{center}\par
+    \@thanks
+    \vfil\null
+  \end{titlepage}
+  \setcounter{footnote}{0}
+  \global\let\@outputtitle\relax
+  \global\let\thanks\relax
+  \global\let\maketitle\relax
+  \global\let\@papertype\@empty
+  \global\let\@thanks\@empty
+  \global\let\@author\@empty
+  \global\let\@date\@empty
+  \global\let\@title\@empty
+  \global\let\@department\@empty
+  \global\let\@paper\@empty
+  \global\let\@supervisor\@empty
+  \global\let\@reviewer\@empty
+  \global\let\@englishtitle\@empty
+  \global\let\title\relax
+  \global\let\author\relax
+  \global\let\date\relax
+  \global\let\and\relax
+  \global\let\department\relax
+  \global\let\suprvisor\relax
+  \global\let\englishtitle\relax
+  \global\let\@signatureplace\relax
+  \global\let\@placeholder\relax
+  \global\let\checktitle\relax
+  \onehalfspacing
+}
+
+% Redefine \tableofcontents
+\renewcommand\tableofcontents{
+  % Margins: top/bottom: 2cm, left: 3cm, right: 1cm.
+  %% \setmarginsrb{left}{top}{right}{bottom}{headerheight}{headerdist}{footerheight}{footerdist}
+  \setmarginsrb{3cm}{1cm}{1cm}{1cm}{1cm}{0.2cm}{1cm}{0.2cm}
+  \pagestyle{plain}
+  \begin{singlespacing}
+    \section*{
+         \normalfont\normalsize\centering\contentsname\@mkboth
+        {
+          \MakeUppercase\contentsname}{\MakeUppercase\contentsname
+        }
+      }
+   \@starttoc{toc}
+  \end{singlespacing}
+  \newpage
+}
+
+% Redefine dot spacing in TOC.
+\renewcommand{\@dotsep}{1}
+
+% Updates section output in TOC.
+\renewcommand\l@section[2]{
+  \ifnum \c@tocdepth >\z@
+    \addpenalty\@secpenalty
+    \setlength\@tempdima{1.5em}
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      \leavevmode {
+        \advance\leftskip\@tempdima
+        \hskip -\leftskip
+        #1
+      }\nobreak\
+      \leaders\hbox{
+        $\m@th\mkern \@dotsep mu\hbox{.}\mkern \@dotsep mu$
+      }
+      \hfil \nobreak\hb@xt@\@pnumwidth{\hss #2}\par
+    \endgroup
+  \fi
+}
+
+% A section should start a new page.
+\renewcommand{\section}{
+  \cleardoublepage
+  \@startsection {section}{1}{\z@}
+    {-3.5ex \@plus -1ex \@minus -.2ex}
+    {2.3ex \@plus.2ex}
+    {\normalfont\large\bfseries}%
+}
+
+% First paragraph in section should be indented
+\let\@oldafterindentfalse\@afterindentfalse
+\def\@ltindent{\let\@afterindendfalse\@afterindenttrue\@afterindenttrue}
+\def\@noltindent{\let\@afterindentfalse\@oldafterindentfalse\@afterindentfalse}
+
+\@ltindent
+
+\RequirePackage{icomma}
+
+%% Babel updates for non-french spacing and lithuanian quotes
+\initiate@active@char{"}
+\@namedef{extraslithuanian}{
+  \languageshorthands{lithuanian}
+}
+\expandafter\addto\csname extraslithuanian\endcsname{
+  \bbl@activate{"}
+}
+
+\expandafter\addto\csname extraslithuanian\endcsname{
+  \bbl@nonfrenchspacing
+}
+\expandafter\addto\csname noextraslithuanian\endcsname{
+  \bbl@frenchspacing
+}
+\addto\noextraslithuanian{\bbl@deactivate{"}}
+
+\begingroup \catcode`\"12
+\def\x{
+  \endgroup
+  \def\dq{"}
+}
+\x
+
+% The proper lithuanian quotes are accessible:
+%% "` - opening double quote
+%% "' - closing double quote
+\declare@shorthand{lithuanian}{"`}{\glqq{}}
+\declare@shorthand{lithuanian}{"'}{\grqq{}}
+
+% Periods after sections and subsections must be in title, TOC, but
+% not in references.
+\def\@sect#1#2#3#4#5#6[#7]#8{
+  \ifnum #2>\c@secnumdepth
+    \let\@svsec\@empty
+  \else
+    \refstepcounter{#1}
+    \protected@edef\@svsec{\csname the#1\endcsname.\quad\relax}
+  \fi
+  \@tempskipa #5\relax
+  \ifdim \@tempskipa>\z@
+    \begingroup
+      #6{%
+        \@hangfrom{\hskip #3\relax\@svsec}%
+          \interlinepenalty \@M #8\@@par}%
+    \endgroup
+    \csname #1mark\endcsname{#7}%
+    \addcontentsline{toc}{#1}{%
+      \ifnum #2>\c@secnumdepth \else
+           % Buvo: \protect\numberline{\csname the#1\endcsname}%
+        \protect\numberline{\csname the#1\endcsname.}%
+      \fi
+      #7}%
+  \else
+    \def\@svsechd{%
+      #6{\hskip #3\relax
+      \@svsec #8}%
+      \csname #1mark\endcsname{#7}%
+      \addcontentsline{toc}{#1}{%
+        \ifnum #2>\c@secnumdepth \else
+            % Buvo: \protect\numberline{\csname the#1\endcsname}%
+          \protect\numberline{\csname the#1\endcsname.}%
+        \fi
+        #7}}%
+  \fi
+  \@xsect{#5}
+}
+
+% Put a period after paragraph and subparagraph titles.
+\newcommand{\@adddot}[1]{#1.}
+
+% Paragraph and subparagraph titles must be indented.
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\parindent}
+  {3.25ex \@plus1ex \@minus.2ex}
+  {-1em}
+  {\normalfont\normalsize\bfseries\@adddot}
+}
+
+\renewcommand\subparagraph{\@startsection{subparagraph}{5}{\parindent}
+  {3.25ex \@plus1ex \@minus.2ex}
+  {-1em}
+  {\normalfont\normalsize\bfseries\@adddot}
+}
+
+% Page numbers - on top.
+\def\ps@plain{
+  \renewcommand{\@oddhead}{\hfill\textrm{\thepage}\hfill}
+  \renewcommand{\@evenhead}{\@oddhead}
+  \renewcommand{\@evenfoot}{}
+  \renewcommand{\@oddfoot}{}
+}
+
+\renewcommand{\appendix}{
+  \renewcommand{\section}{
+    \cleardoublepage
+    \secdef\@Appendix\@sAppendix
+  }
+  \setcounter{section}{0}
+  \renewcommand{\thesection}{Nr. \arabic{section}.}
+}
+
+\def\@Appendix[#1]#2{
+  \refstepcounter{section}
+  \addcontentsline{toc}{section}
+    {\appendixname~\thesection}
+    {\large\bfseries\appendixname\ \thesection\par #2\par}
+  \sectionmark{#1}\vspace{\baselineskip}
+  \footnotesize
+}
+
+\def\@sAppendix#1{
+  {\flushright\large\bfseries\appendixname\par \centering#1\par}
+  \vspace{\baselineskip}
+  \footnotesize
+}
+
+% Reference list
+\addto\captionslithuanian{
+  \renewcommand{\refname}{Literatūros sąrašas}
+}
+
+% Reference list should be in TOC
+\let\oldbibliography\bibliography
+\renewcommand{\bibliography}[1]{
+  \cleardoublepage
+  \addcontentsline{toc}{section}{\refname}
+  \bibliographystyle{alpha}
+  \oldbibliography{#1}
+}
+
+% Comments
+% \newcommand{\comment}[1]{}
+
+
+%% Mark some parts of text for later review
+\newcommand{\todokmode}{\let\@progsisdebugmode{true}}
+%\newcommand{\mark}{
+%
+%}
